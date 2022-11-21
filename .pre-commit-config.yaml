@@ -1,0 +1,23 @@
+repos:
+  # Run Black - the uncompromising Python code formatter
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+
+  # Add some general purpose useful hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      # Apply a file size limit of 500kB
+      - id: check-added-large-files
+      # Make sure that contained YAML files are well-formed
+      - id: check-yaml
+      # Trim trailing whitespace of all sorts
+      - id: trailing-whitespace
+
+  # Check Configuration as Code files for integrations
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.19.1
+    hooks:
+      - id: check-github-workflows
