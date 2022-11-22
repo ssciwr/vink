@@ -2,8 +2,7 @@
 
 **This is still under construction**
 
-This is a stand-alone application that packages [OpenAI's Whisper](https://github.com/openai/whisper) into one
-executable file. Additionally, it provides a minimalistic graphical user interface for transcription.
+This is a stand-alone application that packages [OpenAI's Whisper](https://github.com/openai/whisper) into a distribution that does not require users to have Python installed. Additionally, it provides a minimalistic graphical user interface for transcription.
 
 ## Installation
 
