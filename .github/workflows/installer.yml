@@ -34,7 +34,7 @@ jobs:
 
     - name: Bundle Application
       run: |
-        pyinstaller --onefile --additional-hooks-dir . run_whisper.py
+        pyinstaller --exclude-module readline --additional-hooks-dir . run_whisper.py
 
     - uses: actions/upload-artifact@v3
       with:

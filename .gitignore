@@ -1,3 +1,7 @@
+# FFmpeg executables that might end up here
+ffmpeg
+ffmpeg.exe
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,2 +1,3 @@
 pyinstaller
+requests
 git+https://github.com/openai/whisper.git
