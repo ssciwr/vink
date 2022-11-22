@@ -17,8 +17,8 @@ jobs:
       fail-fast: true
       matrix:
         os:
-          - ubuntu-latest
-          #- windows-latest
+          #- ubuntu-latest
+          - windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -42,6 +42,7 @@ jobs:
 
     - name: Bundle Application (Windows)
       if: runner.os == 'Windows'
+      shell: bash
       run: |
         pyinstaller \
           --additional-hooks-dir . \
