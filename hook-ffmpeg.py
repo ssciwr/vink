@@ -29,7 +29,7 @@ if is_win:
             os.getcwd(),
         )
 
-        datas = [os.path.join(os.getcwd(), "ffmpeg.exe")]
+        datas = [(os.path.join(os.getcwd(), "ffmpeg.exe"), ".")]
 
 if is_linux:
     with tempfile.TemporaryDirectory() as tmp_dir:
