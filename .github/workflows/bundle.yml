@@ -51,8 +51,9 @@ jobs:
 
     - name: Create ZIP archive
       working-directory: dist
+      shell: bash
       run: |
-        zip -r run_whisper.zip run_whisper
+        python -m zipfile -c run_whisper.zip run_whisper
 
     - uses: actions/upload-artifact@v3
       with:
