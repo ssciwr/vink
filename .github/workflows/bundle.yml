@@ -49,10 +49,11 @@ jobs:
           run_whisper.py
 
     - name: Create ZIP archive
+      working-directory: dist
       run: |
-        zip -r run_whisper.zip dist/run_whisper
+        zip -r run_whisper.zip run_whisper
 
     - uses: actions/upload-artifact@v3
       with:
-        path: run_whisper.zip
+        path: dist/run_whisper.zip
         retention-days: 1
