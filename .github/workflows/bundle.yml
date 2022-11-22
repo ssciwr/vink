@@ -17,7 +17,7 @@ jobs:
       fail-fast: true
       matrix:
         os:
-          - ubuntu-latest
+          #- ubuntu-latest
           - windows-latest
 
     steps:
@@ -42,13 +42,20 @@ jobs:
 
     - name: Bundle Application (Windows)
       if: runner.os == 'Windows'
+      shell: bash
       run: |
         pyinstaller \
           --additional-hooks-dir . \
           --add-data 'LICENSE.*;.' \
           run_whisper.py
 
+    - name: Create ZIP archive
+      working-directory: dist
+      shell: bash
+      run: |
+        python -m zipfile -c run_whisper.zip run_whisper
+
     - uses: actions/upload-artifact@v3
       with:
-        path: dist
+        path: dist/run_whisper.zip
         retention-days: 1
