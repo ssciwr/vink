@@ -48,7 +48,11 @@ jobs:
           --add-data 'LICENSE.*;.' \
           run_whisper.py
 
+    - name: Create ZIP archive
+      run: |
+        zip -r run_whisper.zip dist/run_whisper
+
     - uses: actions/upload-artifact@v3
       with:
-        path: dist
+        path: run_whisper.zip
         retention-days: 1
