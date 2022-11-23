@@ -1,4 +1,5 @@
 pyinstaller
+PySide6
 requests
 six
 git+https://github.com/openai/whisper.git
