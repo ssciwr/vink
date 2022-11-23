@@ -43,5 +43,5 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        path: dist/run_whisper.zip
+        path: dist/*.zip
         retention-days: 1
