@@ -41,7 +41,10 @@ Currently, proprietary NVidia software is only included in the Linux distributio
 
 GNU Lesser General Public License v3
 
-A copy of LGPL v3 is included into the distribution as LICENSE.LGPLv3.
+A copy of LGPLv3 is included into the distribution as LICENSE.LGPLv3. A copy of the
+underlying GNU General Public License v3 is included as LICENSE.GPLv3. Note that this
+is *not* because the distribution contains a GPL-licensed dependency, but because the
+LGPL document merely states terms and conditions extending GPL.
 
 * Name: FFmpeg
 * Copyright: FFmpeg contributors
