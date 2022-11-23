@@ -39,6 +39,19 @@ Currently, proprietary NVidia software is only included in the Linux distributio
 
 ---
 
+Microsoft Runtime Libraries
+
+The following files are distributed as part of the Windows distribution:
+
+* msvcp140.dll
+* vcruntime140.dll
+* vcruntime140_1.dll
+
+These files are explicitly whitelisted by Microsoft as "Distributable Code"
+at https://learn.microsoft.com/en-us/visualstudio/releases/2019/redistribution.
+
+---
+
 GNU Lesser General Public License v3
 
 A copy of LGPLv3 is included into the distribution as LICENSE.LGPLv3. A copy of the
