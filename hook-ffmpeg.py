@@ -19,7 +19,7 @@ if is_win:
         with open(os.path.join(tmp_dir, "ffmpeg.zip"), "wb") as zip:
             zip.write(requests.get(WINDOWS_URL).content)
 
-        with zipfile.open(os.path.join(tmp_dir, "ffmpeg.zip"), "r") as zip:
+        with zipfile.ZipFile(os.path.join(tmp_dir, "ffmpeg.zip"), mode="r") as zip:
             zip.extractall(path=tmp_dir)
 
         shutil.copy(
@@ -29,7 +29,7 @@ if is_win:
             os.getcwd(),
         )
 
-        datas = [os.path.join(os.getwcd(), "ffmpeg.exe")]
+        datas = [(os.path.join(os.getcwd(), "ffmpeg.exe"), ".")]
 
 if is_linux:
     with tempfile.TemporaryDirectory() as tmp_dir:

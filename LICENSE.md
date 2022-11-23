@@ -75,12 +75,12 @@ Mozilla Public License v2.0
 
 A copy of the Mozilla Public License v2.0 is included into the distribution as LICENSE.MPLv2. The source code for these projects can be accessed from the given URLs.
 
-* Name: certifi
-* URL: https://github.com/certifi/python-certifi
+* certifi
+  * URL: https://github.com/certifi/python-certifi
 
-* Name: Parts of tqdm (other parts under MIT)
-* Copyright: 2015-2021 Casper da Costa-Luis
-* URL: https://github.com/tqdm/tqdm
+* Parts of tqdm (other parts under MIT)
+  * Copyright: 2015-2021 Casper da Costa-Luis
+  * URL: https://github.com/tqdm/tqdm
 
 ---
 
@@ -88,9 +88,9 @@ Python Software Foundation License
 
 A copy of the Python Software Foundation License is included into the distribution as LICENSE.PSF.
 
-* Name: typing-extensions
-* Copyright: 2001-2022 Python Software Foundation
-* URL: https://github.com/python/typing_extensions
+* typing-extensions
+  * Copyright: 2001-2022 Python Software Foundation
+  * URL: https://github.com/python/typing_extensions
 
 ---
 
@@ -98,29 +98,29 @@ Apache-2.0 License
 
 A copy of the Apache-2.0 License is included into the distribution as LICENSE.Apache-v2.
 
-* Name: ffmpeg-python
-* Copyright: 2017 Karl Kroening
-* URL: https://github.com/kkroening/ffmpeg-python
+* ffmpeg-python
+  * Copyright: 2017 Karl Kroening
+  * URL: https://github.com/kkroening/ffmpeg-python
 
-* Name: huggingface-hub
-* Copyright: huggingface developers
-* URL: https://github.com/huggingface/huggingface_hub
+* huggingface-hub
+  * Copyright: huggingface developers
+  * URL: https://github.com/huggingface/huggingface_hub
 
-* Name: regex
-* Copyright: 2020 Matthew Barnett
-* URL: https://github.com/mrabarnett/mrab-regex
+* regex
+  * Copyright: 2020 Matthew Barnett
+  * URL: https://github.com/mrabarnett/mrab-regex
 
-* Name: requests
-* Copyright: 2019 Kenneth Reitz
-* URL: https://github.com/psf/requests/
+* requests
+  * Copyright: 2019 Kenneth Reitz
+  * URL: https://github.com/psf/requests/
 
-* Name: tokenizers
-* Copyright: huggingface developers
-* URL: https://github.com/huggingface/tokenizers
+* tokenizers
+  * Copyright: huggingface developers
+  * URL: https://github.com/huggingface/tokenizers
 
-* Name: transformers
-* Copyright: huggingface developers
-* URL: https://github.com/huggingface/transformers
+* transformers
+  * Copyright: huggingface developers
+  * URL: https://github.com/huggingface/transformers
 
 ---
 
@@ -128,57 +128,57 @@ BSD-3 Clause License
 
 A copy of the BSD-3 Clause License is included into the distribution as LICENSE.BSD-3. The conditions and disclaimer from the license text apply to all below projects.
 
-* Name: idna
-* Copyright: 2013-2022, Kim Davies and contributors
-* URL: https://github.com/kjd/idna
+* idna
+  * Copyright: 2013-2022, Kim Davies and contributors
+  * URL: https://github.com/kjd/idna
 
-* Name: numpy
-* Copyright: 2005-2022, NumPy Developers
-* URL: https://github.com/numpy/numpy
+* numpy
+  * Copyright: 2005-2022, NumPy Developers
+  * URL: https://github.com/numpy/numpy
 
-* Name: torch
-* Copyright statement:
-  Copyright (c) 2016-     Facebook, Inc            (Adam Paszke)
-  Copyright (c) 2014-     Facebook, Inc            (Soumith Chintala)
-  Copyright (c) 2011-2014 Idiap Research Institute (Ronan Collobert)
-  Copyright (c) 2012-2014 Deepmind Technologies    (Koray Kavukcuoglu)
-  Copyright (c) 2011-2012 NEC Laboratories America (Koray Kavukcuoglu)
-  Copyright (c) 2011-2013 NYU                      (Clement Farabet)
-  Copyright (c) 2006-2010 NEC Laboratories America (Ronan Collobert, Leon Bottou, Iain Melvin, Jason Weston)
-  Copyright (c) 2006      Idiap Research Institute (Samy Bengio)
-  Copyright (c) 2001-2004 Idiap Research Institute (Ronan Collobert, Samy Bengio, Johnny Mariethoz)
-  From Caffe2:
-  Copyright (c) 2016-present, Facebook Inc. All rights reserved.
-  All contributions by Facebook:
-  Copyright (c) 2016 Facebook Inc.
-  All contributions by Google:
-  Copyright (c) 2015 Google Inc.
-  All rights reserved.
-  All contributions by Yangqing Jia:
-  Copyright (c) 2015 Yangqing Jia
-  All rights reserved.
-  All contributions by Kakao Brain:
-  Copyright 2019-2020 Kakao Brain
-  All contributions by Cruise LLC:
-  Copyright (c) 2022 Cruise LLC.
-  All rights reserved.
-  All contributions from Caffe:
-  Copyright(c) 2013, 2014, 2015, the respective contributors
-  All rights reserved.
-  All other contributions:
-  Copyright(c) 2015, 2016 the respective contributors
-  All rights reserved.
-  Caffe2 uses a copyright model similar to Caffe: each contributor holds
-  copyright over their contributions to Caffe2. The project versioning records
-  all such contribution and copyright details. If a contributor wants to further
-  mark their specific copyright on a particular contribution, they should
-  indicate their copyright solely in the commit message of the change when it is
-  committed.
-* Remarks: Specifically, the names of Facebook, Deepmind Technologies, NYU,
-  NEC Laboratories America and IDIAP Research Institute may not be used
-  to endorse of promote products derived from this software without specific
-  prior written permission.
-* URL: https://github.com/pytorch/pytorch
+* torch
+  * Copyright statement:
+    Copyright (c) 2016-     Facebook, Inc            (Adam Paszke)
+    Copyright (c) 2014-     Facebook, Inc            (Soumith Chintala)
+    Copyright (c) 2011-2014 Idiap Research Institute (Ronan Collobert)
+    Copyright (c) 2012-2014 Deepmind Technologies    (Koray Kavukcuoglu)
+    Copyright (c) 2011-2012 NEC Laboratories America (Koray Kavukcuoglu)
+    Copyright (c) 2011-2013 NYU                      (Clement Farabet)
+    Copyright (c) 2006-2010 NEC Laboratories America (Ronan Collobert, Leon Bottou, Iain Melvin, Jason Weston)
+    Copyright (c) 2006      Idiap Research Institute (Samy Bengio)
+    Copyright (c) 2001-2004 Idiap Research Institute (Ronan Collobert, Samy Bengio, Johnny Mariethoz)
+    From Caffe2:
+    Copyright (c) 2016-present, Facebook Inc. All rights reserved.
+    All contributions by Facebook:
+    Copyright (c) 2016 Facebook Inc.
+    All contributions by Google:
+    Copyright (c) 2015 Google Inc.
+    All rights reserved.
+    All contributions by Yangqing Jia:
+    Copyright (c) 2015 Yangqing Jia
+    All rights reserved.
+    All contributions by Kakao Brain:
+    Copyright 2019-2020 Kakao Brain
+    All contributions by Cruise LLC:
+    Copyright (c) 2022 Cruise LLC.
+    All rights reserved.
+    All contributions from Caffe:
+    Copyright(c) 2013, 2014, 2015, the respective contributors
+    All rights reserved.
+    All other contributions:
+    Copyright(c) 2015, 2016 the respective contributors
+    All rights reserved.
+    Caffe2 uses a copyright model similar to Caffe: each contributor holds
+    copyright over their contributions to Caffe2. The project versioning records
+    all such contribution and copyright details. If a contributor wants to further
+    mark their specific copyright on a particular contribution, they should
+    indicate their copyright solely in the commit message of the change when it is
+    committed.
+  * Remarks: Specifically, the names of Facebook, Deepmind Technologies, NYU,
+    NEC Laboratories America and IDIAP Research Institute may not be used
+    to endorse of promote products derived from this software without specific
+    prior written permission.
+  * URL: https://github.com/pytorch/pytorch
 
 ---
 
@@ -186,9 +186,9 @@ BSD-2 Clause License
 
 A copy of the BSD-2 Clause License is included into the distribution as LICENSE.BSD-2. The conditions and disclaimer from the license text apply to all below projects.
 
-* Name: packaging
-* Copyright:  Donald Stufft and individual contributors
-* URL: https://github.com/pypa/packaging
+* packaging
+  * Copyright: Donald Stufft and individual contributors
+  * URL: https://github.com/pypa/packaging
 
 ---
 
@@ -196,49 +196,49 @@ MIT License
 
 A copy of the MIT License is included into the distribution as LICENSE.MIT.
 
-* Name: charset-normalizer
-* Copyright: 2019 TAHRI Ahmed R.
-* URL: https://github.com/Ousret/charset_normalizer
+* charset-normalizer
+  * Copyright: 2019 TAHRI Ahmed R.
+  * URL: https://github.com/Ousret/charset_normalizer
 
-* Name: future
-* Copyright: 2013-2019 Python Charmers Pty Ltd, Australia
-* URL: https://github.com/PythonCharmers/python-future
+* future
+  * Copyright: 2013-2019 Python Charmers Pty Ltd, Australia
+  * URL: https://github.com/PythonCharmers/python-future
 
-* Name: more-itertools
-* Copyright: 2012 Erik Rose
-* URL: https://github.com/more-itertools/more-itertools
+* more-itertools
+  * Copyright: 2012 Erik Rose
+  * URL: https://github.com/more-itertools/more-itertools
 
-* Name: pyparsing
-* Copyright: 2003-2022  Paul T. McGuire
-* URL: https://github.com/pyparsing/pyparsing
+* pyparsing
+  * Copyright: 2003-2022  Paul T. McGuire
+  * URL: https://github.com/pyparsing/pyparsing
 
-* Name: pyyaml
-* Copyright: 2017-2021 Ingy döt Net, 2006-2016 Kirill Simonov
-* URL: https://github.com/yaml/pyyaml
+* pyyaml
+  * Copyright: 2017-2021 Ingy döt Net, 2006-2016 Kirill Simonov
+  * URL: https://github.com/yaml/pyyaml
 
-* Name: setuptools
-* Copyright: Jason R. Coombs
-* URL: https://github.com/pypa/setuptools
+* setuptools
+  * Copyright: Jason R. Coombs
+  * URL: https://github.com/pypa/setuptools
 
-* Name: Parts of tqdm (other parts under MPLv2)
-* Copyright: 2013 Noam Yorav-Raphael, 2016 on behalf of Google Inc.
-* URL: https://github.com/tqdm/tqdm
+* Parts of tqdm (other parts under MPLv2)
+  * Copyright: 2013 Noam Yorav-Raphael, 2016 on behalf of Google Inc.
+  * URL: https://github.com/tqdm/tqdm
 
-* Name: urllib3
-* Copyright: 2008-2020 Andrey Petrov and contributors
-* URL: https://github.com/urllib3/urllib3
+* urllib3
+  * Copyright: 2008-2020 Andrey Petrov and contributors
+  * URL: https://github.com/urllib3/urllib3
 
-* Name: wheel
-* Copyright: 2012 Daniel Holth and contributors
-* URL: https://github.com/pypa/wheel
+* wheel
+  * Copyright: 2012 Daniel Holth and contributors
+  * URL: https://github.com/pypa/wheel
 
-* Name: whisper
-* Copyright: 2022 OpenAI
-* URL: https://github.com/openai/whisper
+* whisper
+  * Copyright: 2022 OpenAI
+  * URL: https://github.com/openai/whisper
 
 ---
 
 The Unlicense
 
-* Name: filelock
-* URL: https://github.com/tox-dev/py-filelock
+* filelock
+  * URL: https://github.com/tox-dev/py-filelock
