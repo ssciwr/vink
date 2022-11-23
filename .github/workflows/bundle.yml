@@ -31,6 +31,10 @@ jobs:
       run: |
         python -m pip install -r requirements.txt
 
+    - name: Bundle distribution
+      run: |
+        pyinstaller run_whisper.spec
+
     - name: Create ZIP archive
       working-directory: dist
       shell: bash
