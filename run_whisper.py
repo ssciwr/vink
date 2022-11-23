@@ -1,10 +1,13 @@
+import os
+import psutil
 import sys
 
-from whisper.transcribe import cli
+from whisper import load_model
+from whisper.transcribe import cli, transcribe
 
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication,
-    QCheckBox,
+    QLabel,
     QWidget,
     QHBoxLayout,
     QVBoxLayout,
@@ -14,6 +17,22 @@ from PyQt6.QtWidgets import (
     QGroupBox,
     QComboBox,
 )
+
+
+# The list of available whisper models
+_models = {
+    "Tiny Model (english only)": ("tiny.en", 1.1e9),
+    "Tiny Model": ("tiny", 1.1e9),
+    "Base Model (english only)": ("base.en", 1.1e9),
+    "Base Model": ("base", 1.1e9),
+    "Small Model (english only)": ("small.en", 2.2e9),
+    "Small Model": ("small", 2.2e9),
+    "Medium Model (english only)": ("medium.en", 5.5e9),
+    "Medium Model": ("medium", 5.5e9),
+    "Large Model": ("large", 1.1e10),
+}
+
+# The list of available languages
 
 
 class FileSelectionWidget(QGroupBox):
@@ -41,10 +60,6 @@ class FileSelectionWidget(QGroupBox):
         return self._input.text()
 
 
-def transcribe(*args):
-    print(args)
-
-
 def gui():
     # Setup
     app = QApplication([])
@@ -62,19 +77,44 @@ def gui():
     # Language model selection
     language_group = QGroupBox("Language Model")
     language_layout = QVBoxLayout()
+
+    # Model selection dropdown
     cb = QComboBox()
-    for model in ["a", "b"]:
-        cb.addItem(model)
+    available_mem = psutil.virtual_memory().available
+    omitted = False
+    for model, (_, mem) in _models.items():
+        if mem < available_mem:
+            cb.addItem(model)
+        else:
+            omitted = True
+    cb.setCurrentText("Base Model")
     language_layout.addWidget(cb)
+    if omitted:
+        language_layout.addWidget(
+            QLabel(
+                "One or more models were omitted because the available RAM on this computer is not sufficient to run them."
+            )
+        )
     language_group.setLayout(language_layout)
     layout.addWidget(language_group)
 
     # Run Button
-    run_button = QPushButton("&Transcribe")
+    run_group = QGroupBox("Running the model")
+    run_layout = QVBoxLayout()
+    run_button = QPushButton("Transcribe")
+
+    def _transcribe(input, output, model):
+        model = load_model(_models[model][0])
+        ret = transcribe(model, input)
+        with open(output, "w") as f:
+            f.write(ret["text"])
+
     run_button.clicked.connect(
-        lambda: transcribe(input.filename, output.filename, cb.currentText())
+        lambda: _transcribe(input.filename, output.filename, cb.currentText())
     )
-    layout.addWidget(run_button)
+    run_layout.addWidget(run_button)
+    run_group.setLayout(run_layout)
+    layout.addWidget(run_group)
 
     # Finalize
     window.setLayout(layout)
