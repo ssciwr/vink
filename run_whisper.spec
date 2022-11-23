@@ -21,7 +21,7 @@ a = Analysis(
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 # Remove any MS API dll's from the binaries
-a.binaries = [b for b in a.binaries if "api-ms-win" not in b]
+a.datas = [b for b in a.datas if "api-ms-win" not in b]
 
 exe = EXE(
     pyz,
