@@ -59,15 +59,15 @@ underlying GNU General Public License v3 is included as LICENSE.GPLv3. Note that
 is *not* because the distribution contains a GPL-licensed dependency, but because the
 LGPL document merely states terms and conditions extending GPL.
 
-* Name: FFmpeg
-* Copyright: FFmpeg contributors
-* URL: https://www.ffmpeg.org
-* Remark: We distribute a statically linked ffmpeg executable that is provided by the
-  FFmpeg-Builds project at https://github.com/BtbN/FFmpeg-Builds. We distribute the
-  LGPL-only version of the executable. In order to change the version of ffmpeg used
-  find the executable in the distribution folder and replace it with a version of your
-  choice - the ffmpeg-python code base will interact with it using Python's subprocess
-  module. This documents a technical requirement by the LGPLv3 license.
+* FFmpeg
+  * Copyright: FFmpeg contributors
+  * URL: https://www.ffmpeg.org
+  * Remark: We distribute a statically linked ffmpeg executable that is provided by the
+    FFmpeg-Builds project at https://github.com/BtbN/FFmpeg-Builds. We distribute the
+    LGPL-only version of the executable. In order to change the version of ffmpeg used
+    find the executable in the distribution folder and replace it with a version of your
+    choice - the ffmpeg-python code base will interact with it using Python's subprocess
+    module. This documents a technical requirement by the LGPLv3 license.
 
 ---
 
