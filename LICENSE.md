@@ -35,8 +35,6 @@ The NVidia Software License Agreement for the projects cublas, cuda-nvrtc and cu
 
 The distribution includes shared libraries that are explicitly white-listed for distribution in the corresponding SLAs. They are obtained from the PyPI distribution of the Python packages nvidia-cublas-cu11, nvidia-cuda-nvrtc-cu11, nvidia-cuda-runtime-cu11, nvidia-cudnn-cu11
 
-Currently, proprietary NVidia software is only included in the Linux distribution.
-
 ---
 
 Microsoft Runtime Libraries
@@ -49,6 +47,18 @@ The following files are distributed as part of the Windows distribution:
 
 These files are explicitly whitelisted by Microsoft as "Distributable Code"
 at https://learn.microsoft.com/en-us/visualstudio/releases/2019/redistribution.
+
+---
+
+Linux system library dependencies
+
+Individual copyright and license statements for bundled Linux system libraries
+are provided in the sys-licenses subdirectory. These are either permissive licenses
+or LGPL licenses. All libraries can be found in the distribution directory as
+shared libraries, allowing you to switch them for alternative versions of that library.
+
+Some libraries are dual licensed under the GPL and another, more permissive license.
+In that case, we distribute the software under the permissive license, not the GPL.
 
 ---
 
@@ -69,6 +79,13 @@ LGPL document merely states terms and conditions extending GPL.
     choice - the ffmpeg-python code base will interact with it using Python's subprocess
     module. This documents a technical requirement by the LGPLv3 license.
 
+* PySide6 and Qt libraries
+  * Copyright: Qt for Python Team
+  * URL: https://www.qt.io/qt-for-python
+  * Remark: All PySide and Qt libraries are shipped as shared libraries under the LGPL
+    and reside in the distribution directory and/or its PySide6 subdirectory. Replacing
+    those libraries with modified ones will allow you to modify the program.
+
 ---
 
 Mozilla Public License v2.0
@@ -87,6 +104,9 @@ A copy of the Mozilla Public License v2.0 is included into the distribution as L
 Python Software Foundation License
 
 A copy of the Python Software Foundation License is included into the distribution as LICENSE.PSF.
+
+* libpython3.9
+  * Copyright: 2001-2022 Python Software Foundation
 
 * typing-extensions
   * Copyright: 2001-2022 Python Software Foundation

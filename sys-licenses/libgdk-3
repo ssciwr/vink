@@ -1,0 +1,155 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: GTK# 3
+Upstream-Contact: gtk-sharp-list@ximian.com
+Source: https://github.com/mono/gtk-sharp
+
+Files: *
+       gdk/*
+       pango/*
+       atk/*
+       glib/*
+       gtk/*
+       gio/*
+       gtkdotnet/*
+       sample/*
+Copyright: Copyright (c) 2001-2003, 2005 Mike Kestner
+           Copyright (c) 2001 Bob Smith
+           Copyright (c) 2002-2003 Rachel Hestilow
+           Copyright (c) 2002-2003 Ximian, Inc.
+           Copyright (C) 2002, 2006 Alp Toker
+           Copyright (C) 2002 Daniel Morgan
+           Copyright (c) 2002 Jasper van Putten
+           Copyright (c) 2002 Vladimir Vukicevic
+           Copyright (c) 2002 Gonzalo Paniagua
+           Copyright (c) 2002 Kristian Rietveld
+           Copyright (c) 2002 Ricardo Fernández Pascual
+           Copyright (c) 2003-2011 Novell, Inc.
+           Copyright (c) 2003 Radek Doulik
+           Copyright (c) 2003 Miguel de Icaza.
+           Copyright (c) 2003 Martin Willemoes Hansen
+           Copyright (c) 2003 Moritz Balz
+           Copyright (C) 2004-2005 John Luke
+           Copyright (c) 2004 Manuel V. Santos
+           Copyright (c) 2004 Jeroen Zwartepoorte
+           Copyright (c) 2004 Todd Berman
+           Copyright (c) 2005 Eric Butler
+           Copyright (C) 2007 Brad Taylor
+           Copyright (C) 2007 Peter Johanson
+           Copyright (c) 2008-2009 Christian Hoff
+           Copyright (c) 2008 Stephane Delcroix
+           Copyright (c) 2011 Bertrand Lorentz
+License: LGPL-2
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of version 2 of the Lesser GNU General
+ Public License as published by the Free Software Foundation.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+ .
+ You should have received a copy of the GNU Lesser General Public
+ License along with this program; if not, write to the
+ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ Boston, MA 02111-1307, USA.
+ .
+ On Debian systems, the full text of the GNU Lesser General Public License
+ version 2 can be found in the file  `/usr/share/common-licenses/LGPL-2'.
+
+Files: cairo/*
+Copyright: Copyright (C) 2004, 2007, 2011 Novell, Inc (http://www.novell.com)
+           Copyright (C) 2005 John Luke
+           Copyright (C) 2006 Alp Toker
+License: MIT/X11
+
+Files: generator/*
+Copyright: Copyright (c) 2001-2003 Mike Kestner
+           Copyright (c) 2002-2003 Rachel Hestilow
+           Copyright (c) 2003-2008, 2011 Novell Inc.
+           Copyright (c) 2003 Ximian Inc.
+           Copyright (c) 2008-2009 Christian Hoff
+License: GPL-2
+
+Files: generator/LogWriter.cs
+Copyright: Copyright (c) 2011 Novell Inc.
+License: MIT/X11
+
+Files: gio/GioStream.cs
+Copyright: Copyright (c) 2008 Stephane Delcroix
+License: MIT/X11
+
+Files: glib/KeyFile.cs
+Copyright: Copyright (c) 2008-2011 Novell, Inc.
+License: MIT/X11
+
+Files: gtk/gui-thread-check/*
+Copyright: Copyright (C) 2008 Novell, Inc.
+License: GPL-2
+
+Files: parser/*
+Copyright: Copyright (c) 2001-2003 Mike Kestner
+           Copyright (c) 2003-2009 Novell, Inc.
+           Copyright (c) 2003 Martin Willemoes Hansen
+License: GPL-2
+
+Files: sample/Scribble.cs
+       sample/gtk-gio/*
+Copyright: Copyright (c) 2009 Novell, Inc.
+License: MIT/X11
+
+Files: debian/*
+Copyright: © 2012 Mirco Bauer <meebey@debian.org>
+License: GPL
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ .
+ On Debian systems the full text of the GNU General Public License can be found
+ in the `/usr/share/common-licenses/GPL' file.
+
+License: GPL-2
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of version 2 of the GNU General Public
+ License as published by the Free Software Foundation.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public
+ License along with this program; if not, write to the
+ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ Boston, MA 02111-1307, USA.
+ .
+ On Debian systems the full text of the GNU General Public License version 2
+ can be found in the `/usr/share/common-licenses/GPL-2' file.
+
+License: MIT/X11
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
