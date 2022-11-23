@@ -39,7 +39,7 @@ jobs:
       working-directory: dist
       shell: bash
       run: |
-        python -m zipfile -c run_whisper.zip run_whisper
+        python -m zipfile -c run_whisper_${{ runner.os }}.zip run_whisper
 
     - uses: actions/upload-artifact@v3
       with:
