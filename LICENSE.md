@@ -238,6 +238,16 @@ A copy of the MIT License is included into the distribution as LICENSE.MIT.
 
 ---
 
+ZLib License
+
+A copy of the ZLib License is included into the distribution as LICENSE.ZLIB.
+
+* ZLib
+  * Copyright: 1995-2022 Jean-loup Gailly and Mark Adler
+  * URL https://github.com/madler/zlib
+
+---
+
 The Unlicense
 
 * filelock
