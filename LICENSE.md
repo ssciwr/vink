@@ -94,6 +94,18 @@ A copy of the Python Software Foundation License is included into the distributi
 
 ---
 
+Linux system library dependencies
+
+Individual copyright and license statements for bundled Linux system libraries
+are provided in the sys-licenses subdirectory. These are either permissive licenses
+or LGPL licenses. All libraries can be found in the distribution directory as
+shared libraries, allowing you to switch them for alternative versions of that library.
+
+Some libraries are dual licensed under the GPL and another, more permissive license.
+In that case, we distribute the software under the permissive license, not the GPL.
+
+---
+
 Apache-2.0 License
 
 A copy of the Apache-2.0 License is included into the distribution as LICENSE.Apache-v2.
