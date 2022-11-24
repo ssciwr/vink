@@ -144,6 +144,10 @@ A copy of the BSD-3 Clause License is included into the distribution as LICENSE.
   * Copyright: 2005-2022, NumPy Developers
   * URL: https://github.com/numpy/numpy
 
+* psutil
+  * Copyright: 2009, Jay Loden, Dave Daeschler, Giampaolo Rodola'
+  * URL: https://github.com/giampaolo/psutil
+
 * torch
   * Copyright statement:
     Copyright (c) 2016-     Facebook, Inc            (Adam Paszke)
