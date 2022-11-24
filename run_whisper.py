@@ -1,6 +1,9 @@
 import os
 import psutil
 import sys
+import torch
+
+from torch import cuda
 
 from whisper import load_model
 from whisper.transcribe import cli, transcribe
@@ -31,8 +34,6 @@ _models = {
     "Medium Model": ("medium", 5.5e9),
     "Large Model": ("large", 1.1e10),
 }
-
-# The list of available languages
 
 
 class FileSelectionWidget(QGroupBox):
@@ -103,15 +104,32 @@ def gui():
     run_layout = QVBoxLayout()
     run_button = QPushButton("Transcribe")
 
-    def _transcribe(input, output, model):
-        model = load_model(_models[model][0])
-        ret = transcribe(model, input)
-        with open(output, "w") as f:
+    device = QComboBox()
+    device.addItem("CPU")
+    for i in range(cuda.device_count()):
+        device.addItem(cuda.get_device_name(i))
+
+    def _transcribe():
+        # Set the correct device
+        dev = device.currentIndex() - 1
+        if dev < 0:
+            dev = torch.device("cpu")
+        else:
+            dev = torch.device(f"cuda:{dev}")
+
+        # Load the selected model
+        model = cb.currentText()
+        model = load_model(_models[model][0], device=dev)
+
+        # Trigger transcription
+        ret = transcribe(model, input.filename)
+
+        # Write results to chosen output file
+        with open(output.filename, "w") as f:
             f.write(ret["text"])
 
-    run_button.clicked.connect(
-        lambda: _transcribe(input.filename, output.filename, cb.currentText())
-    )
+    run_button.clicked.connect(_transcribe)
+    run_layout.addWidget(device)
     run_layout.addWidget(run_button)
     run_group.setLayout(run_layout)
     layout.addWidget(run_group)
