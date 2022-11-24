@@ -1,5 +1,5 @@
 # We ignore downloaded models
-whisper_models
+whisper_models/
 
 # FFmpeg executables that might end up here
 ffmpeg
