@@ -1,10 +1,8 @@
 # OpenAI Whisper standalone distribution
 
-**This is still under construction**
-
 This is a stand-alone application that packages [OpenAI's Whisper](https://github.com/openai/whisper) into a distribution that does not require users to have Python installed. Additionally, it provides a minimalistic graphical user interface for transcription.
 
-## Installation on Windows
+## Installation on Windows 10+
 
 Please download the zipped distribution from one of the following sources and unpack it to a target location of your choice:
 
@@ -35,4 +33,4 @@ python run_whisper.py
 
 ## Licensing
 
-The code provided in this project itself is covered by [the MIT license](LICENSE.md). The overall distribution is also licensed  under the MIT license. For details about bundled components and their license, please check [LICENSE.md](LICENSE.md).
+The code provided in this project itself is covered by [the MIT license](LICENSE.md). The overall distribution is also licensed under the MIT license. For details about bundled components and their license, please check [LICENSE.md](LICENSE.md).
