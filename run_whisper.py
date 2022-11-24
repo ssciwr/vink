@@ -119,7 +119,11 @@ def gui():
 
         # Load the selected model
         model = cb.currentText()
-        model = load_model(_models[model][0], device=dev)
+        model = load_model(
+            _models[model][0],
+            download_root=os.path.join(os.path.dirname(__file__), "whisper_models"),
+            device=dev,
+        )
 
         # Trigger transcription
         ret = transcribe(model, input.filename)
