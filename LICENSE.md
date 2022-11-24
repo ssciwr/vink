@@ -50,18 +50,6 @@ at https://learn.microsoft.com/en-us/visualstudio/releases/2019/redistribution.
 
 ---
 
-Linux system library dependencies
-
-Individual copyright and license statements for bundled Linux system libraries
-are provided in the sys-licenses subdirectory. These are either permissive licenses
-or LGPL licenses. All libraries can be found in the distribution directory as
-shared libraries, allowing you to switch them for alternative versions of that library.
-
-Some libraries are dual licensed under the GPL and another, more permissive license.
-In that case, we distribute the software under the permissive license, not the GPL.
-
----
-
 GNU Lesser General Public License v3
 
 A copy of LGPLv3 is included into the distribution as LICENSE.LGPLv3. A copy of the
@@ -155,6 +143,10 @@ A copy of the BSD-3 Clause License is included into the distribution as LICENSE.
 * numpy
   * Copyright: 2005-2022, NumPy Developers
   * URL: https://github.com/numpy/numpy
+
+* psutil
+  * Copyright: 2009, Jay Loden, Dave Daeschler, Giampaolo Rodola'
+  * URL: https://github.com/giampaolo/psutil
 
 * torch
   * Copyright statement:
