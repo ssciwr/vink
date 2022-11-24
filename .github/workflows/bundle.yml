@@ -31,6 +31,10 @@ jobs:
       run: |
         python -m pip install --extra-index-url https://download.pytorch.org/whl/cu117 -r requirements.txt
 
+    - name: Download models to bundle
+      run: |
+        python download_models.py tiny.en tiny base.en base small.en small
+
     - name: Bundle distribution
       run: |
         pyinstaller run_whisper.spec

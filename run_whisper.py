@@ -104,7 +104,10 @@ def gui():
     run_button = QPushButton("Transcribe")
 
     def _transcribe(input, output, model):
-        model = load_model(_models[model][0])
+        model = load_model(
+            _models[model][0],
+            download_root=os.path.join(os.path.dirname(__file__), "whisper_models"),
+        )
         ret = transcribe(model, input)
         with open(output, "w") as f:
             f.write(ret["text"])
