@@ -14,7 +14,7 @@ a = Analysis(
     ['run_whisper.py'],
     pathex=[],
     binaries=[],
-    datas=[('LICENSE.*', '.'), ('sys-licenses/*', 'sys-licenses')] + model_data,
+    datas=[('LICENSE.*', '.')] + model_data,
     hiddenimports=[],
     hookspath=['.'],
     hooksconfig={},
