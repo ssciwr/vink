@@ -2,6 +2,8 @@ import os
 import psutil
 import sys
 import torch
+import tqdm
+import traceback
 
 from torch import cuda
 
@@ -15,10 +17,19 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QFileDialog,
+    QProgressDialog,
     QPushButton,
     QLineEdit,
     QGroupBox,
     QComboBox,
+)
+
+from PySide6.QtCore import (
+    QObject,
+    QRunnable,
+    Signal,
+    Slot,
+    QThreadPool,
 )
 
 
@@ -34,6 +45,91 @@ _models = {
     "Medium Model": ("medium", 5.5e9),
     "Large Model": ("large", 1.1e10),
 }
+
+
+class WorkerSignals(QObject):
+    """
+    Defines the signals available from a running worker thread.
+
+    Supported signals are:
+
+    finished
+        No data
+
+    error
+        tuple (exctype, value, traceback.format_exc() )
+
+    result
+        object data returned from processing, anything
+
+    progress
+        int indicating % progress
+
+    """
+
+    finished = Signal()
+    error = Signal(tuple)
+    result = Signal(object)
+    progress = Signal(int)
+
+
+class Worker(QRunnable):
+    """
+    Worker thread
+
+    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
+
+    :param callback: The function callback to run on this worker thread. Supplied args and
+                     kwargs will be passed through to the runner.
+    :type callback: function
+    :param args: Arguments to pass to the callback function
+    :param kwargs: Keywords to pass to the callback function
+
+    """
+
+    def __init__(self, fn, *args, **kwargs):
+        super(Worker, self).__init__()
+
+        # Store constructor arguments (re-used for processing)
+        self.fn = fn
+        self.args = args
+        self.kwargs = kwargs
+        self.signals = WorkerSignals()
+
+        # Add the callback to our kwargs
+        self.kwargs["progress_callback"] = self.signals.progress
+
+    @Slot()
+    def run(self):
+        """
+        Initialise the runner function with passed args, kwargs.
+        """
+
+        # Retrieve args/kwargs here; and fire processing using them
+        try:
+            result = self.fn(*self.args, **self.kwargs)
+        except:
+            traceback.print_exc()
+            exctype, value = sys.exc_info()[:2]
+            self.signals.error.emit((exctype, value, traceback.format_exc()))
+        else:
+            self.signals.result.emit(result)  # Return the result of the processing
+        finally:
+            self.signals.finished.emit()  # Done
+
+
+class TqdmCompatibilityStatusBar:
+    def __init__(self, progress_callback):
+        self.progress_callback = progress_callback
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        pass
+
+    def update(self, value):
+        self.progress_callback.emit(value)
 
 
 class FileSelectionWidget(QGroupBox):
@@ -61,85 +157,113 @@ class FileSelectionWidget(QGroupBox):
         return self._input.text()
 
 
-def gui():
-    # Setup
-    app = QApplication([])
-    window = QWidget()
-    layout = QVBoxLayout()
+class WhisperWindow(QWidget):
+    def __init__(self, *args, **kwargs):
+        super(WhisperWindow, self).__init__(*args, **kwargs)
+        self.threadpool = QThreadPool()
+        layout = QVBoxLayout()
 
-    # Sound input
-    input = FileSelectionWidget(default="input.wav", title="Input Sound File")
-    layout.addWidget(input)
+        # Sound input
+        self.input = FileSelectionWidget(default="input.wav", title="Input Sound File")
+        layout.addWidget(self.input)
 
-    # Text output
-    output = FileSelectionWidget(default="output.txt", title="Output Text File")
-    layout.addWidget(output)
-
-    # Language model selection
-    language_group = QGroupBox("Language Model")
-    language_layout = QVBoxLayout()
-
-    # Model selection dropdown
-    cb = QComboBox()
-    available_mem = psutil.virtual_memory().available
-    omitted = False
-    for model, (_, mem) in _models.items():
-        if mem < available_mem:
-            cb.addItem(model)
-        else:
-            omitted = True
-    cb.setCurrentText("Base Model")
-    language_layout.addWidget(cb)
-    if omitted:
-        language_layout.addWidget(
-            QLabel(
-                "One or more models were omitted because the available RAM on this computer is not sufficient to run them."
-            )
+        # Text output
+        self.output = FileSelectionWidget(
+            default="output.txt", title="Output Text File"
         )
-    language_group.setLayout(language_layout)
-    layout.addWidget(language_group)
+        layout.addWidget(self.output)
 
-    # Run Button
-    run_group = QGroupBox("Running the model")
-    run_layout = QVBoxLayout()
-    run_button = QPushButton("Transcribe")
+        # Language model selection
+        language_group = QGroupBox("Language Model")
+        language_layout = QVBoxLayout()
 
-    device = QComboBox()
-    device.addItem("CPU")
-    for i in range(cuda.device_count()):
-        device.addItem(cuda.get_device_name(i))
+        # Model selection dropdown
+        self.cb = QComboBox()
+        available_mem = psutil.virtual_memory().available
+        omitted = False
+        for model, (_, mem) in _models.items():
+            if mem < available_mem:
+                self.cb.addItem(model)
+            else:
+                omitted = True
+        self.cb.setCurrentText("Base Model")
+        language_layout.addWidget(self.cb)
+        if omitted:
+            language_layout.addWidget(
+                QLabel(
+                    "One or more models were omitted because the available RAM on this computer is not sufficient to run them."
+                )
+            )
+        language_group.setLayout(language_layout)
+        layout.addWidget(language_group)
 
-    def _transcribe():
+        # Run Button
+        run_group = QGroupBox("Running the model")
+        run_layout = QVBoxLayout()
+        run_button = QPushButton("Transcribe")
+
+        self.device = QComboBox()
+        self.device.addItem("CPU")
+        for i in range(cuda.device_count()):
+            self.device.addItem(cuda.get_device_name(i))
+
+        run_button.clicked.connect(self.transcribe_spawn)
+        run_layout.addWidget(self.device)
+        run_layout.addWidget(run_button)
+        run_group.setLayout(run_layout)
+        layout.addWidget(run_group)
+
+        # Finalize
+        self.setLayout(layout)
+
+    def transcribe(self, progress_callback=None):
         # Set the correct device
-        dev = device.currentIndex() - 1
+        dev = self.device.currentIndex() - 1
         if dev < 0:
             dev = torch.device("cpu")
         else:
             dev = torch.device(f"cuda:{dev}")
 
         # Load the selected model
-        model = cb.currentText()
+        model = self.cb.currentText()
         model = load_model(
             _models[model][0],
             download_root=os.path.join(os.path.dirname(__file__), "whisper_models"),
             device=dev,
         )
 
+        def tqdm_dropin(total=None, unit=None, disable=False):
+            self.dialog = QProgressDialog(
+                "Transcribing audio...", "Cancel", 0, total, None
+            )
+            return TqdmCompatibilityStatusBar(progress_callback)
+
+        # Monkeypatch tqdm
+        import tqdm
+
+        tqdm.tqdm = tqdm_dropin
+
         # Trigger transcription
-        ret = transcribe(model, input.filename)
+        ret = transcribe(model, self.input.filename)
 
         # Write results to chosen output file
-        with open(output.filename, "w") as f:
+        with open(self.output.filename, "w") as f:
             f.write(ret["text"])
 
-    run_button.clicked.connect(_transcribe)
-    run_layout.addWidget(device)
-    run_layout.addWidget(run_button)
-    run_group.setLayout(run_layout)
-    layout.addWidget(run_group)
+    def progress_callback(self, n):
+        self.dialog.setValue(self.dialog.value() + n)
 
-    # Finalize
-    window.setLayout(layout)
+    def transcribe_spawn(self):
+        worker = Worker(self.transcribe)
+        worker.signals.progress.connect(self.progress_callback)
+        worker.signals.finished.connect(lambda: self.dialog.close())
+        self.threadpool.start(worker)
+
+
+def gui():
+    # Setup
+    app = QApplication([])
+    window = WhisperWindow()
     window.show()
     app.exec()
 
