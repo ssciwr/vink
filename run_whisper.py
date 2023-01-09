@@ -1,3 +1,4 @@
+import codecs
 import os
 import psutil
 import sys
@@ -129,7 +130,7 @@ def gui():
         ret = transcribe(model, input.filename)
 
         # Write results to chosen output file
-        with open(output.filename, "w") as f:
+        with codecs.open(output.filename, "w", "utf-8") as f:
             f.write(ret["text"])
 
     run_button.clicked.connect(_transcribe)
