@@ -1,15 +1,14 @@
 # OpenAI Whisper standalone distribution
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7357738.svg)](https://doi.org/10.5281/zenodo.7357738)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7515911.svg)](https://doi.org/10.5281/zenodo.7515911)
 
 This is a stand-alone application that packages [OpenAI's Whisper](https://github.com/openai/whisper) into a distribution that does not require users to have Python installed. Additionally, it provides a minimalistic graphical user interface for transcription.
 
 ## Installation on Windows 10+
 
-Please download the zipped distribution from one of the following sources and unpack it to a target location of your choice:
+Please download the zipped distribution from Zenodo and unpack it to a target location of your choice:
 
-* [2022-11-24 Build from zenodo.org](https://zenodo.org/record/7357738/files/run_whisper_windows.zip?download=1), MD5 checksum: aaacff08f21416c1cac2a2c9d9cd58dd
-* [2022-11-24 Build from Heidelberg University server](https://heibox.uni-heidelberg.de/f/3f3085b078044549a4af/?dl=1), MD5 checksum: aaacff08f21416c1cac2a2c9d9cd58dd
+* [2023-01-09 Build from zenodo.org](https://zenodo.org/record/7515911/files/run_whisper_windows.zip?download=1), MD5 checksum: 7f4fa981549c1bca3d8732386a0def20
 
 ## Usage on Windows
 
