@@ -1,3 +1,4 @@
+import codecs
 import os
 import psutil
 import sys
@@ -247,7 +248,7 @@ class WhisperWindow(QWidget):
         ret = transcribe(model, self.input.filename)
 
         # Write results to chosen output file
-        with open(self.output.filename, "w") as f:
+        with codecs.open(self.output.filename, "w", "utf-8") as f:
             f.write(ret["text"])
 
     def progress_callback(self, n):
