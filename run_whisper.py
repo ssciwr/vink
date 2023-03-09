@@ -108,7 +108,7 @@ class WhisperWindow(QWidget):
         # Run Button
         run_group = QGroupBox("Running the model")
         run_layout = QVBoxLayout()
-        run_button = QPushButton("Transcribe")
+        self.run_button = QPushButton("Transcribe")
 
         self.device = QComboBox()
         self.device.addItem("CPU")
@@ -118,10 +118,10 @@ class WhisperWindow(QWidget):
         self.progressbar = QProgressBar()
         self.progressbar.hide()
 
-        run_button.clicked.connect(self.transcribe)
+        self.run_button.clicked.connect(self.transcribe)
         run_layout.addWidget(self.device)
         run_layout.addWidget(self.progressbar)
-        run_layout.addWidget(run_button)
+        run_layout.addWidget(self.run_button)
         run_group.setLayout(run_layout)
         layout.addWidget(run_group)
 
@@ -129,6 +129,9 @@ class WhisperWindow(QWidget):
         self.setLayout(layout)
 
     def transcribe(self):
+        # Disable the button while we are processing
+        self.run_button.setEnabled(False)
+
         # Make the progress bar visible
         self.progressbar.reset()
         self.progressbar.show()
@@ -204,6 +207,9 @@ class WhisperWindow(QWidget):
 
         # Hide the progress bar again and reset it
         self.progressbar.hide()
+
+        # Re-enable the run button
+        self.run_button.setEnabled(True)
 
 
 def gui():
