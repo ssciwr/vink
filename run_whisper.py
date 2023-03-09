@@ -5,6 +5,7 @@ import sys
 import torch
 import tqdm
 import traceback
+import whisper
 
 from torch import cuda
 
@@ -18,7 +19,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QFileDialog,
-    QProgressDialog,
+    QProgressBar,
     QPushButton,
     QLineEdit,
     QGroupBox,
@@ -48,77 +49,6 @@ _models = {
 }
 
 
-class WorkerSignals(QObject):
-    """
-    Defines the signals available from a running worker thread.
-
-    Supported signals are:
-
-    finished
-        No data
-
-    error
-        tuple (exctype, value, traceback.format_exc() )
-
-    result
-        object data returned from processing, anything
-
-    progress
-        int indicating % progress
-
-    """
-
-    finished = Signal()
-    error = Signal(tuple)
-    result = Signal(object)
-    progress = Signal(int)
-
-
-class Worker(QRunnable):
-    """
-    Worker thread
-
-    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
-
-    :param callback: The function callback to run on this worker thread. Supplied args and
-                     kwargs will be passed through to the runner.
-    :type callback: function
-    :param args: Arguments to pass to the callback function
-    :param kwargs: Keywords to pass to the callback function
-
-    """
-
-    def __init__(self, fn, *args, **kwargs):
-        super(Worker, self).__init__()
-
-        # Store constructor arguments (re-used for processing)
-        self.fn = fn
-        self.args = args
-        self.kwargs = kwargs
-        self.signals = WorkerSignals()
-
-        # Add the callback to our kwargs
-        self.kwargs["progress_callback"] = self.signals.progress
-
-    @Slot()
-    def run(self):
-        """
-        Initialise the runner function with passed args, kwargs.
-        """
-
-        # Retrieve args/kwargs here; and fire processing using them
-        try:
-            result = self.fn(*self.args, **self.kwargs)
-        except:
-            traceback.print_exc()
-            exctype, value = sys.exc_info()[:2]
-            self.signals.error.emit((exctype, value, traceback.format_exc()))
-        else:
-            self.signals.result.emit(result)  # Return the result of the processing
-        finally:
-            self.signals.finished.emit()  # Done
-
-
 class TqdmCompatibilityStatusBar:
     def __init__(self, progress_callback):
         self.progress_callback = progress_callback
@@ -130,7 +60,7 @@ class TqdmCompatibilityStatusBar:
         pass
 
     def update(self, value):
-        self.progress_callback.emit(value)
+        self.progress_callback(value)
 
 
 class FileSelectionWidget(QGroupBox):
@@ -208,8 +138,12 @@ class WhisperWindow(QWidget):
         for i in range(cuda.device_count()):
             self.device.addItem(cuda.get_device_name(i))
 
-        run_button.clicked.connect(self.transcribe_spawn)
+        self.progressbar = QProgressBar()
+        self.progressbar.hide()
+
+        run_button.clicked.connect(self.transcribe)
         run_layout.addWidget(self.device)
+        run_layout.addWidget(self.progressbar)
         run_layout.addWidget(run_button)
         run_group.setLayout(run_layout)
         layout.addWidget(run_group)
@@ -217,13 +151,46 @@ class WhisperWindow(QWidget):
         # Finalize
         self.setLayout(layout)
 
-    def transcribe(self, progress_callback=None):
+    def transcribe(self):
+        # Make the progress bar visible
+        self.progressbar.reset()
+        self.progressbar.show()
+
         # Set the correct device
         dev = self.device.currentIndex() - 1
         if dev < 0:
             dev = torch.device("cpu")
         else:
             dev = torch.device(f"cuda:{dev}")
+
+        def tqdm_transcribe_dropin(total=None, unit=None, disable=False):
+            self.progressbar.reset()
+            self.progressbar.setFormat("Transcribing audio: %p%")
+            self.progressbar.setMaximum(total)
+            return TqdmCompatibilityStatusBar(
+                lambda val: self.progressbar.setValue(self.progressbar.value() + val)
+            )
+
+        def tqdm_download_dropin(
+            total=None, ncols=None, unit=None, unit_scale=True, unit_divisor=None
+        ):
+            self.progressbar.reset()
+            self.progressbar.setFormat("Downloading model: %p%")
+            self.progressbar.setMaximum(total / unit_divisor)
+            return TqdmCompatibilityStatusBar(
+                lambda val: self.progressbar.setValue(
+                    self.progressbar.value() + val / unit_divisor
+                )
+            )
+
+        tqdm.tqdm = tqdm_transcribe_dropin
+        whisper.tqdm = tqdm_download_dropin
+
+        # Show intermediate message on the progress bar
+        self.progressbar.reset()
+        self.progressbar.setFormat("Preparing model loading...")
+        self.progressbar.setMaximum(1)
+        self.progressbar.setValue(0)
 
         # Load the selected model
         model = self.cb.currentText()
@@ -233,16 +200,11 @@ class WhisperWindow(QWidget):
             device=dev,
         )
 
-        def tqdm_dropin(total=None, unit=None, disable=False):
-            self.dialog = QProgressDialog(
-                "Transcribing audio...", "Cancel", 0, total, None
-            )
-            return TqdmCompatibilityStatusBar(progress_callback)
-
-        # Monkeypatch tqdm
-        import tqdm
-
-        tqdm.tqdm = tqdm_dropin
+        # Show intermediate message on the progress bar
+        self.progressbar.reset()
+        self.progressbar.setFormat("Preparing transcription...")
+        self.progressbar.setMaximum(1)
+        self.progressbar.setValue(0)
 
         # Trigger transcription
         ret = transcribe(model, self.input.filename)
@@ -251,14 +213,8 @@ class WhisperWindow(QWidget):
         with codecs.open(self.output.filename, "w", "utf-8") as f:
             f.write(ret["text"])
 
-    def progress_callback(self, n):
-        self.dialog.setValue(self.dialog.value() + n)
-
-    def transcribe_spawn(self):
-        worker = Worker(self.transcribe)
-        worker.signals.progress.connect(self.progress_callback)
-        worker.signals.finished.connect(lambda: self.dialog.close())
-        self.threadpool.start(worker)
+        # Hide the progress bar again and reset it
+        self.progressbar.hide()
 
 
 def gui():

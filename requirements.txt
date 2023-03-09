@@ -4,3 +4,4 @@ PySide6
 requests
 six
 openai-whisper==20230124
+tqdm
