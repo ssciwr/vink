@@ -26,14 +26,6 @@ from PySide6.QtWidgets import (
     QComboBox,
 )
 
-from PySide6.QtCore import (
-    QObject,
-    QRunnable,
-    Signal,
-    Slot,
-    QThreadPool,
-)
-
 
 # The list of available whisper models
 _models = {
@@ -47,20 +39,6 @@ _models = {
     "Medium Model": ("medium", 5.5e9),
     "Large Model": ("large", 1.1e10),
 }
-
-
-class TqdmCompatibilityStatusBar:
-    def __init__(self, progress_callback):
-        self.progress_callback = progress_callback
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *args):
-        pass
-
-    def update(self, value):
-        self.progress_callback(value)
 
 
 class FileSelectionWidget(QGroupBox):
@@ -91,7 +69,6 @@ class FileSelectionWidget(QGroupBox):
 class WhisperWindow(QWidget):
     def __init__(self, *args, **kwargs):
         super(WhisperWindow, self).__init__(*args, **kwargs)
-        self.threadpool = QThreadPool()
         layout = QVBoxLayout()
 
         # Sound input
@@ -163,28 +140,40 @@ class WhisperWindow(QWidget):
         else:
             dev = torch.device(f"cuda:{dev}")
 
-        def tqdm_transcribe_dropin(total=None, unit=None, disable=False):
-            self.progressbar.reset()
-            self.progressbar.setFormat("Transcribing audio: %p%")
-            self.progressbar.setMaximum(total)
-            return TqdmCompatibilityStatusBar(
-                lambda val: self.progressbar.setValue(self.progressbar.value() + val)
-            )
+        def monkeypatching_tqdm(progressbar, format):
+            def _monkeypatching_tqdm(
+                total=None,
+                ncols=None,
+                unit=None,
+                unit_scale=True,
+                unit_divisor=None,
+                disable=False,
+            ):
+                class TqdmMonkeypatchContext:
+                    def __enter__(self):
+                        return self
 
-        def tqdm_download_dropin(
-            total=None, ncols=None, unit=None, unit_scale=True, unit_divisor=None
-        ):
-            self.progressbar.reset()
-            self.progressbar.setFormat("Downloading model: %p%")
-            self.progressbar.setMaximum(total / unit_divisor)
-            return TqdmCompatibilityStatusBar(
-                lambda val: self.progressbar.setValue(
-                    self.progressbar.value() + val / unit_divisor
-                )
-            )
+                    def __exit__(self, *args):
+                        pass
 
-        tqdm.tqdm = tqdm_transcribe_dropin
-        whisper.tqdm = tqdm_download_dropin
+                    def update(self, value):
+                        if unit_divisor:
+                            value = value / unit_divisor
+                        progressbar.setValue(progressbar.value() + value)
+
+                if unit_divisor:
+                    total = total / unit_divisor
+
+                self.progressbar.reset()
+                self.progressbar.setFormat(format)
+                self.progressbar.setMaximum(total)
+
+                return TqdmMonkeypatchContext()
+
+            return _monkeypatching_tqdm
+
+        tqdm.tqdm = monkeypatching_tqdm(self.progressbar, "Transcribing audio: %p%")
+        whisper.tqdm = monkeypatching_tqdm(self.progressbar, "Downloading model: %p%")
 
         # Show intermediate message on the progress bar
         self.progressbar.reset()
