@@ -3,6 +3,9 @@ import os
 import psutil
 import sys
 import torch
+import tqdm
+import traceback
+import whisper
 
 from torch import cuda
 
@@ -16,6 +19,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QFileDialog,
+    QProgressBar,
     QPushButton,
     QLineEdit,
     QGroupBox,
@@ -62,85 +66,159 @@ class FileSelectionWidget(QGroupBox):
         return self._input.text()
 
 
-def gui():
-    # Setup
-    app = QApplication([])
-    window = QWidget()
-    layout = QVBoxLayout()
+class WhisperWindow(QWidget):
+    def __init__(self, *args, **kwargs):
+        super(WhisperWindow, self).__init__(*args, **kwargs)
+        layout = QVBoxLayout()
 
-    # Sound input
-    input = FileSelectionWidget(default="input.wav", title="Input Sound File")
-    layout.addWidget(input)
+        # Sound input
+        self.input = FileSelectionWidget(default="input.wav", title="Input Sound File")
+        layout.addWidget(self.input)
 
-    # Text output
-    output = FileSelectionWidget(default="output.txt", title="Output Text File")
-    layout.addWidget(output)
-
-    # Language model selection
-    language_group = QGroupBox("Language Model")
-    language_layout = QVBoxLayout()
-
-    # Model selection dropdown
-    cb = QComboBox()
-    available_mem = psutil.virtual_memory().available
-    omitted = False
-    for model, (_, mem) in _models.items():
-        if mem < available_mem:
-            cb.addItem(model)
-        else:
-            omitted = True
-    cb.setCurrentText("Base Model")
-    language_layout.addWidget(cb)
-    if omitted:
-        language_layout.addWidget(
-            QLabel(
-                "One or more models were omitted because the available RAM on this computer is not sufficient to run them."
-            )
+        # Text output
+        self.output = FileSelectionWidget(
+            default="output.txt", title="Output Text File"
         )
-    language_group.setLayout(language_layout)
-    layout.addWidget(language_group)
+        layout.addWidget(self.output)
 
-    # Run Button
-    run_group = QGroupBox("Running the model")
-    run_layout = QVBoxLayout()
-    run_button = QPushButton("Transcribe")
+        # Language model selection
+        language_group = QGroupBox("Language Model")
+        language_layout = QVBoxLayout()
 
-    device = QComboBox()
-    device.addItem("CPU")
-    for i in range(cuda.device_count()):
-        device.addItem(cuda.get_device_name(i))
+        # Model selection dropdown
+        self.cb = QComboBox()
+        available_mem = psutil.virtual_memory().available
+        omitted = False
+        for model, (_, mem) in _models.items():
+            if mem < available_mem:
+                self.cb.addItem(model)
+            else:
+                omitted = True
+        self.cb.setCurrentText("Base Model")
+        language_layout.addWidget(self.cb)
+        if omitted:
+            language_layout.addWidget(
+                QLabel(
+                    "One or more models were omitted because the available RAM on this computer is not sufficient to run them."
+                )
+            )
+        language_group.setLayout(language_layout)
+        layout.addWidget(language_group)
 
-    def _transcribe():
+        # Run Button
+        run_group = QGroupBox("Running the model")
+        run_layout = QVBoxLayout()
+        self.run_button = QPushButton("Transcribe")
+
+        self.device = QComboBox()
+        self.device.addItem("CPU")
+        for i in range(cuda.device_count()):
+            self.device.addItem(cuda.get_device_name(i))
+
+        self.progressbar = QProgressBar()
+        self.progressbar.hide()
+
+        self.run_button.clicked.connect(self.transcribe)
+        run_layout.addWidget(self.device)
+        run_layout.addWidget(self.progressbar)
+        run_layout.addWidget(self.run_button)
+        run_group.setLayout(run_layout)
+        layout.addWidget(run_group)
+
+        # Finalize
+        self.setLayout(layout)
+
+    def transcribe(self):
+        # Disable the button while we are processing
+        self.run_button.setEnabled(False)
+
+        # Make the progress bar visible
+        self.progressbar.reset()
+        self.progressbar.show()
+
         # Set the correct device
-        dev = device.currentIndex() - 1
+        dev = self.device.currentIndex() - 1
         if dev < 0:
             dev = torch.device("cpu")
         else:
             dev = torch.device(f"cuda:{dev}")
 
+        def monkeypatching_tqdm(progressbar, format):
+            def _monkeypatching_tqdm(
+                total=None,
+                ncols=None,
+                unit=None,
+                unit_scale=True,
+                unit_divisor=None,
+                disable=False,
+            ):
+                class TqdmMonkeypatchContext:
+                    def __enter__(self):
+                        return self
+
+                    def __exit__(self, *args):
+                        pass
+
+                    def update(self, value):
+                        if unit_divisor:
+                            value = value / unit_divisor
+                        progressbar.setValue(progressbar.value() + value)
+                        # This is ugly, but until we properly offload to a worker thread
+                        # it prevents the GUI from freezing.
+                        QApplication.instance().processEvents()
+
+                if unit_divisor:
+                    total = total / unit_divisor
+
+                self.progressbar.reset()
+                self.progressbar.setFormat(format)
+                self.progressbar.setMaximum(total)
+
+                return TqdmMonkeypatchContext()
+
+            return _monkeypatching_tqdm
+
+        tqdm.tqdm = monkeypatching_tqdm(self.progressbar, "Transcribing audio: %p%")
+        whisper.tqdm = monkeypatching_tqdm(self.progressbar, "Downloading model: %p%")
+
+        # Show intermediate message on the progress bar
+        self.progressbar.reset()
+        self.progressbar.setFormat("Preparing model loading...")
+        self.progressbar.setMaximum(1)
+        self.progressbar.setValue(0)
+
         # Load the selected model
-        model = cb.currentText()
+        model = self.cb.currentText()
         model = load_model(
             _models[model][0],
             download_root=os.path.join(os.path.dirname(__file__), "whisper_models"),
             device=dev,
         )
 
+        # Show intermediate message on the progress bar
+        self.progressbar.reset()
+        self.progressbar.setFormat("Preparing transcription...")
+        self.progressbar.setMaximum(1)
+        self.progressbar.setValue(0)
+
         # Trigger transcription
-        ret = transcribe(model, input.filename)
+        ret = transcribe(model, self.input.filename)
 
         # Write results to chosen output file
-        with codecs.open(output.filename, "w", "utf-8") as f:
+        with codecs.open(self.output.filename, "w", "utf-8") as f:
             f.write(ret["text"])
 
-    run_button.clicked.connect(_transcribe)
-    run_layout.addWidget(device)
-    run_layout.addWidget(run_button)
-    run_group.setLayout(run_layout)
-    layout.addWidget(run_group)
+        # Hide the progress bar again and reset it
+        self.progressbar.hide()
 
-    # Finalize
-    window.setLayout(layout)
+        # Re-enable the run button
+        self.run_button.setEnabled(True)
+
+
+def gui():
+    # Setup
+    app = QApplication([])
+    window = WhisperWindow()
     window.show()
     app.exec()
 
