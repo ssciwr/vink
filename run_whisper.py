@@ -163,6 +163,9 @@ class WhisperWindow(QWidget):
                         if unit_divisor:
                             value = value / unit_divisor
                         progressbar.setValue(progressbar.value() + value)
+                        # This is ugly, but until we properly offload to a worker thread
+                        # it prevents the GUI from freezing.
+                        QApplication.instance().processEvents()
 
                 if unit_divisor:
                     total = total / unit_divisor
