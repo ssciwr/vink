@@ -2,6 +2,10 @@
 
 import glob
 import os
+import sys
+
+# Under some circumstances, we are doing a *lot* of recursion.
+sys.setrecursionlimit(sys.getrecursionlimit() * 5)
 
 block_cipher = None
 
