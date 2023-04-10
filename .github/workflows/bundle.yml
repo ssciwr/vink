@@ -38,13 +38,18 @@ jobs:
       run: |
         pyinstaller run_whisper.spec
 
-    - name: Create ZIP archive
-      working-directory: dist
+    - name: Create bundle file list for installer
       shell: bash
       run: |
-        python -m zipfile -c run_whisper_${{ runner.os }}.zip run_whisper
+        python gen_list_files.py dist/run_whisper
+
+    - name: Create a Windows installer
+      uses: joncloud/makensis-action@v4
+      with:
+        script-file: installer.nsi
+
 
     - uses: actions/upload-artifact@v3
       with:
-        path: dist/*.zip
+        path: "whisper-standalone.exe"
         retention-days: 1

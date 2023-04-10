@@ -1,3 +1,6 @@
+# We ignore generated NSIS scripts
+*.nsh
+
 # We ignore downloaded models
 whisper_models/
 
