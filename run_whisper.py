@@ -106,9 +106,9 @@ class WhisperWindow(QWidget):
         self.run_button = QPushButton("Transcribe")
 
         self.device = QComboBox()
-        self.device.addItem("CPU")
         for i in range(cuda.device_count()):
             self.device.addItem(cuda.get_device_name(i))
+        self.device.addItem("CPU")
 
         self.progressbar = QProgressBar()
         self.progressbar.hide()
@@ -155,11 +155,10 @@ class WhisperWindow(QWidget):
         self.progressbar.show()
 
         # Set the correct device
-        dev = self.device.currentIndex() - 1
-        if dev < 0:
+        if self.device.currentIndex() == cuda.device_count():
             dev = torch.device("cpu")
         else:
-            dev = torch.device(f"cuda:{dev}")
+            dev = torch.device(f"cuda:{self.device.currentIndex()}")
 
         def monkeypatching_tqdm(progressbar, format):
             def _monkeypatching_tqdm(
