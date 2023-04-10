@@ -43,11 +43,16 @@ jobs:
       run: |
         python gen_list_files.py dist/run_whisper
 
-    - name: Create a Windows installer
-      uses: joncloud/makensis-action@v4
-      with:
-        script-file: installer.nsi
+    - name: Install NSISBI
+      shell: bash
+      run: |
+        curl -kLSs https://sourceforge.net/projects/nsisbi/files/latest/download -o nsisbi.zip
+        unzip nsisbi.zip
 
+    - name: Create a Windows installer
+      shell: bash
+      run: |
+        ./nsis-binary-7336-1/Bin/makensis.exe installer.nsi
 
     - uses: actions/upload-artifact@v3
       with:
