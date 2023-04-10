@@ -24,6 +24,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QGroupBox,
     QComboBox,
+    QPlainTextEdit,
 )
 
 
@@ -75,12 +76,6 @@ class WhisperWindow(QWidget):
         self.input = FileSelectionWidget(default="input.wav", title="Input Sound File")
         layout.addWidget(self.input)
 
-        # Text output
-        self.output = FileSelectionWidget(
-            default="output.txt", title="Output Text File"
-        )
-        layout.addWidget(self.output)
-
         # Language model selection
         language_group = QGroupBox("Language Model")
         language_layout = QVBoxLayout()
@@ -125,12 +120,35 @@ class WhisperWindow(QWidget):
         run_group.setLayout(run_layout)
         layout.addWidget(run_group)
 
+        # Output group
+        self.output_group = QGroupBox()
+        output_layout = QVBoxLayout()
+
+        self.outputfield = QPlainTextEdit()
+        self.outputfield.setReadOnly(True)
+
+        copytoclipboard = QPushButton("Copy to clipboard")
+        copytoclipboard.clicked.connect(
+            lambda: QApplication.clipboard().setText(self.outputfield.toPlainText())
+        )
+
+        output_layout.addWidget(copytoclipboard)
+        output_layout.addWidget(self.outputfield)
+
+        self.output_group.hide()
+        self.output_group.setLayout(output_layout)
+        self.output_group.setWindowTitle("Transcription Results")
+
         # Finalize
         self.setLayout(layout)
+        self.setWindowTitle("Whisper Transcription")
 
     def transcribe(self):
         # Disable the button while we are processing
         self.run_button.setEnabled(False)
+
+        # Hide previously generated output
+        self.output_group.hide()
 
         # Make the progress bar visible
         self.progressbar.reset()
@@ -204,9 +222,9 @@ class WhisperWindow(QWidget):
         # Trigger transcription
         ret = transcribe(model, self.input.filename)
 
-        # Write results to chosen output file
-        with codecs.open(self.output.filename, "w", "utf-8") as f:
-            f.write(ret["text"])
+        # Show output
+        self.outputfield.setPlainText(ret["text"])
+        self.output_group.show()
 
         # Hide the progress bar again and reset it
         self.progressbar.hide()
