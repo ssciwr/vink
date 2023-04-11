@@ -13,7 +13,7 @@ a = Analysis(
     ['run_whisper.py'],
     pathex=[],
     binaries=[],
-    datas=[('LICENSE.*', '.')] + model_data,
+    datas=[('LICENSE.*', '.')],
     hiddenimports=[],
     hookspath=['.'],
     hooksconfig={},

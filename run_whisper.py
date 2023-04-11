@@ -1,10 +1,8 @@
-import codecs
 import os
 import psutil
 import sys
 import torch
 import tqdm
-import traceback
 import whisper
 import xdg
 
