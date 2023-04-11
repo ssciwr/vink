@@ -55,7 +55,10 @@ section "install"
 	setOutPath $INSTDIR
 	# Files added here should be removed by the uninstaller (see section "uninstall")
 	!include "install_files.nsh"
+
 	# Add any other files for the install directory (license files, app data, etc) here
+	SetOutPath "$INSTDIR"
+	File "whisper.ico"
 
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
 	writeUninstaller "$INSTDIR\uninstall.exe"
