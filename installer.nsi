@@ -101,7 +101,8 @@ functionEnd
 section "uninstall"
 
 	# Remove Start Menu launcher
-	delete "$SMPROGRAMS\${APPNAME}.lnk"
+	delete "$SMPROGRAMS\Whisper Transcription.lnk"
+	delete "$INSTDIR\whisper.ico"
 
 	# Remove files
 	!include "uninstall_files.nsh"

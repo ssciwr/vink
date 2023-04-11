@@ -23,10 +23,11 @@ with open("install_files.nsh", "w") as i:
             for fname in files:
                 print(f'File "{root}{os.path.sep}{fname}"', file=i)
                 print(
-                    f'Delete "$INSTDIR{os.path.sep}{root}{os.path.sep}{fname}"', file=u
+                    f'Delete "$INSTDIR{os.path.sep}{os.path.relpath(root, ROOT)}{os.path.sep}{fname}"',
+                    file=u,
                 )
                 accumulated_size += os.stat(os.path.join(root, fname)).st_size
-            print(f'RMDir "$INSTDIR{os.path.sep}{root}"', file=u)
+            print(f'RMDir "$INSTDIR{os.path.sep}{os.path.relpath(root, ROOT)}"', file=u)
 
         # Export the accumulated installation size
         print(f"!define INSTALLSIZE {accumulated_size // 1024}", file=i)
