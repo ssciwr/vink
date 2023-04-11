@@ -9,11 +9,6 @@ sys.setrecursionlimit(sys.getrecursionlimit() * 5)
 
 block_cipher = None
 
-# pyinstaller can't handle empty GLOB expressions, so we check beforehand
-model_data = []
-if glob.glob('whisper_models/*'):
-    model_data = [('whisper_models/*', 'whisper_models')]
-
 a = Analysis(
     ['run_whisper.py'],
     pathex=[],
