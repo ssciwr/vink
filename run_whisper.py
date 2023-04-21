@@ -1,11 +1,10 @@
-import codecs
 import os
 import psutil
 import sys
 import torch
 import tqdm
-import traceback
 import whisper
+import xdg
 
 from torch import cuda
 
@@ -208,7 +207,7 @@ class WhisperWindow(QWidget):
         model = self.cb.currentText()
         model = load_model(
             _models[model][0],
-            download_root=os.path.join(os.path.dirname(__file__), "whisper_models"),
+            download_root=xdg.xdg_cache_home() / "whisper",
             device=dev,
         )
 

@@ -30,21 +30,27 @@ jobs:
       run: |
         python -m pip install --extra-index-url https://download.pytorch.org/whl/cu117 -r requirements.txt
 
-    - name: Download models to bundle
-      run: |
-        python download_models.py tiny.en tiny base.en base small.en small
-
     - name: Bundle distribution
       run: |
         pyinstaller run_whisper.spec
 
-    - name: Create ZIP archive
-      working-directory: dist
+    - name: Create bundle file list for installer
       shell: bash
       run: |
-        python -m zipfile -c run_whisper_${{ runner.os }}.zip run_whisper
+        python gen_list_files.py dist/run_whisper
+
+    - name: Install NSISBI
+      shell: bash
+      run: |
+        curl -kLSs https://sourceforge.net/projects/nsisbi/files/latest/download -o nsisbi.zip
+        unzip nsisbi.zip
+
+    - name: Create a Windows installer
+      shell: bash
+      run: |
+        ./nsis-binary-7336-1/Bin/makensis.exe installer.nsi
 
     - uses: actions/upload-artifact@v3
       with:
-        path: dist/*.zip
+        path: "whisper-standalone.exe"
         retention-days: 1
