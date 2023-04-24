@@ -140,7 +140,7 @@ class WhisperWindow(QWidget):
 
         # Finalize
         self.setLayout(layout)
-        self.setWindowTitle("Whisper Transcription")
+        self.setWindowTitle("Vink")
 
     def transcribe(self):
         # Disable the button while we are processing

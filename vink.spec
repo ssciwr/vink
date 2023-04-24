@@ -10,7 +10,7 @@ sys.setrecursionlimit(sys.getrecursionlimit() * 5)
 block_cipher = None
 
 a = Analysis(
-    ['run_whisper.py'],
+    ['vink.py'],
     pathex=[],
     binaries=[],
     datas=[('LICENSE.*', '.')],
@@ -35,7 +35,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='run_whisper',
+    name='vink',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -56,5 +56,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='run_whisper',
+    name='vink',
 )

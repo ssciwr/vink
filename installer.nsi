@@ -2,7 +2,7 @@
 # resources mentioned within: https://blog.kempj.co.uk/2014/10/packaging-python-app-windows/
 
 # All the other settings can be tweaked by editing the !defines at the top of this script
-!define APPNAME "Whisper"
+!define APPNAME "Vink"
 !define DESCRIPTION "A stand-alone distribution to OpenAI's Whisper"
 # These three must be integers
 !define VERSIONMAJOR 0
@@ -10,9 +10,9 @@
 !define VERSIONBUILD 0
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
-!define HELPURL "https://github.com/ssciwr/whisper-standalone" # "Support Information" link
-!define UPDATEURL "https://github.com/ssciwr/whisper-standalone" # "Product Updates" link
-!define ABOUTURL "https://github.com/ssciwr/whisper-standalone" # "Publisher" link
+!define HELPURL "https://github.com/ssciwr/vink" # "Support Information" link
+!define UPDATEURL "https://github.com/ssciwr/vink" # "Product Updates" link
+!define ABOUTURL "https://github.com/ssciwr/vink" # "Publisher" link
 
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
 
@@ -23,8 +23,8 @@ LicenseData "License.md"
 
 # This will be in the installer/uninstaller's title bar
 Name "${APPNAME}"
-Icon "whisper.ico"
-outFile "whisper-standalone.exe"
+Icon "vink.ico"
+outFile "vink-installer.exe"
 
 !include LogicLib.nsh
 
@@ -56,20 +56,20 @@ section "install"
 
 	# Add any other files for the install directory (license files, app data, etc) here
 	SetOutPath "$INSTDIR"
-	File "whisper.ico"
+	File "vink.ico"
 
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
 	writeUninstaller "$INSTDIR\uninstall.exe"
 
 	# Start Menu
-	createShortCut "$SMPROGRAMS\Whisper Transcription.lnk" "$INSTDIR\run_whisper.exe" "" "$INSTDIR\whisper.ico"
+	createShortCut "$SMPROGRAMS\Vink.lnk" "$INSTDIR\vink.exe" "" "$INSTDIR\vink.ico"
 
 	# Registry information for add/remove programs
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayName" "${APPNAME} - ${DESCRIPTION}"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "InstallLocation" "$\"$INSTDIR$\""
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayIcon" "$\"$INSTDIR\whisper.ico$\""
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayIcon" "$\"$INSTDIR\vink.ico$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "Publisher" "$\"${COMPANYNAME}$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "HelpLink" "$\"${HELPURL}$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "URLUpdateInfo" "$\"${UPDATEURL}$\""
@@ -99,8 +99,8 @@ functionEnd
 section "uninstall"
 
 	# Remove Start Menu launcher
-	delete "$SMPROGRAMS\Whisper Transcription.lnk"
-	delete "$INSTDIR\whisper.ico"
+	delete "$SMPROGRAMS\Vink.lnk"
+	delete "$INSTDIR\vink.ico"
 
 	# Remove files
 	!include "uninstall_files.nsh"

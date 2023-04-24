@@ -32,12 +32,12 @@ jobs:
 
     - name: Bundle distribution
       run: |
-        pyinstaller run_whisper.spec
+        pyinstaller vink.spec
 
     - name: Create bundle file list for installer
       shell: bash
       run: |
-        python gen_list_files.py dist/run_whisper
+        python gen_list_files.py dist/vink
 
     - name: Install NSISBI
       shell: bash
@@ -52,5 +52,5 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        path: "whisper-standalone.exe"
+        path: "vink-installer.exe"
         retention-days: 1
