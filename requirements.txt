@@ -3,6 +3,6 @@ pyinstaller
 PySide6
 requests
 six
-openai-whisper==20230308
+openai-whisper==20231117
 tqdm
 xdg
