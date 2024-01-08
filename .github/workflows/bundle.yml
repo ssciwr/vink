@@ -28,7 +28,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --extra-index-url https://download.pytorch.org/whl/cu117 -r requirements.txt
+        python -m pip install --extra-index-url https://download.pytorch.org/whl/cu118 -r requirements.txt
 
     - name: Bundle distribution
       run: |
@@ -48,7 +48,7 @@ jobs:
     - name: Create a Windows installer
       shell: bash
       run: |
-        ./nsis-binary-7336-1/Bin/makensis.exe installer.nsi
+        ./nsis-binary-7405-1/Bin/makensis.exe installer.nsi
 
     - uses: actions/upload-artifact@v3
       with:
