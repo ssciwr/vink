@@ -48,7 +48,7 @@ jobs:
     - name: Create a Windows installer
       shell: bash
       run: |
-        ./nsis-binary-7336-1/Bin/makensis.exe installer.nsi
+        ./nsis-binary-7405-1/Bin/makensis.exe installer.nsi
 
     - uses: actions/upload-artifact@v3
       with:
